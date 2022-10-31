@@ -11,8 +11,7 @@ using Blog.Model.BlogNew;
 namespace Blog.Model
 {
     public class MyDbContext<TEntity> : SimpleClient<TEntity> where TEntity : class, new()
-    {
-
+    { 
         public MyDbContext(ISqlSugarClient? context = null) : base(context)
         {
             // base.Context = DbScoped.Sugar;

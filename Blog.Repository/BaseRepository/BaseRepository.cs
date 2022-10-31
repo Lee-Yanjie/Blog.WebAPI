@@ -12,11 +12,11 @@ using SqlSugar.IOC;
 
 namespace Blog.Repository.BaseRepository
 {
-    public class BaseRepository<TEntity> : SimpleClient<TEntity>, IBaseRepository<TEntity> where TEntity : class, new()
+    public class BaseRepository<TEntity> :  MyDbContext<TEntity>, IBaseRepository<TEntity> where TEntity : class, new()
     {
         public BaseRepository(ISqlSugarClient? context = null) : base(context)
-        {
-            new MyDbContext<TEntity>();
+        { 
+              new MyDbContext<TEntity>(); 
         }
         public async Task<bool> CreateAsync(TEntity entity)
         {
