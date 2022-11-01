@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace Blog.Service.BlogNewsService
 {
@@ -21,6 +22,12 @@ namespace Blog.Service.BlogNewsService
         public async Task<bool> GetInfo()
         {
            return await _iBlogNewsRepository.DeleteAsync(1);
+        }
+
+        public DataTable GetInfoTest()
+        {
+            return _iBlogNewsRepository.GetInfoTest();
+             
         }
     }
 }

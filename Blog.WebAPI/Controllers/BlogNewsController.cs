@@ -3,11 +3,14 @@ using Blog.Service.BlogNewsService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Blog.WebAPI.Utility.ApiResult;
+using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blog.WebAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class BlogNewsController : ControllerBase
     {
         private readonly IBlogNewsService _iBlogNewsService;
@@ -17,6 +20,9 @@ namespace Blog.WebAPI.Controllers
             _logger = logger;
             this._iBlogNewsService = iBlogNewsService;
         }
+        //MD5加密 
+        //MD5Helper.MD5Encrypt32(userpwd),
+
 
         /// <summary>
         /// 添加一个博客信息
@@ -24,10 +30,11 @@ namespace Blog.WebAPI.Controllers
         /// <param name="blogNews"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<bool> CreateBlogNews(BlogNews  blogNews)
+        public async Task<ActionResult<ApiResult>> CreateBlogNews(BlogNews  blogNews)
         {
-            bool data = await _iBlogNewsService.CreateAsync(blogNews);
-            return data;
+            bool dataResult = await _iBlogNewsService.CreateAsync(blogNews);
+            if (!dataResult) return ApiResultHelper.Error("添加失败，服务器发生错误");
+            return ApiResultHelper.Success(blogNews);
         }
         /// <summary>
         /// 查询所有博客信息
@@ -36,6 +43,7 @@ namespace Blog.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<ApiResult>> GetBlogNews()
         { 
+            DataTable dt = _iBlogNewsService.GetInfoTest();
             var data = await _iBlogNewsService.QueryAsync(c => c.Title != null);
             if (data==null) return ApiResultHelper.Error("没有更多的文章");
             return ApiResultHelper.Success(data);
