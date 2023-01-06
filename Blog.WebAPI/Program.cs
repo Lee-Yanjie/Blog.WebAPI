@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
+    //配置 jwt  Authorization 输入按钮 
     var scheme = new OpenApiSecurityScheme()
     {
         Description = "Authorization header. \r\nExample: 'Bearer 12345abcdef'",
@@ -42,15 +43,24 @@ builder.Services.AddJWTConfig(builder);
 
 
 
+
+//实现跨域设置
+string[] urls = new[] { "http://localhost:8022" };
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(builder => builder.WithOrigins(urls)
+    .AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-
+//}
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

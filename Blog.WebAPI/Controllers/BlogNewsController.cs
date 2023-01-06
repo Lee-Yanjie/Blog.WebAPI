@@ -30,7 +30,7 @@ namespace Blog.WebAPI.Controllers
         /// <param name="blogNews"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<ApiResult>> CreateBlogNews(BlogNews  blogNews)
+        public async Task<ActionResult<ApiResult>> CreateBlogNews(BlogNews blogNews)
         {
             bool dataResult = await _iBlogNewsService.CreateAsync(blogNews);
             if (!dataResult) return ApiResultHelper.Error("添加失败，服务器发生错误");
@@ -42,11 +42,12 @@ namespace Blog.WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<ApiResult>> GetBlogNews()
-        { 
+        {
             DataTable dt = _iBlogNewsService.GetInfoTest();
             var data = await _iBlogNewsService.QueryAsync(c => c.Title != null);
-            if (data==null) return ApiResultHelper.Error("没有更多的文章");
+            if (data == null) return ApiResultHelper.Error("没有更多的文章");
             return ApiResultHelper.Success(data);
         }
+         
     }
 }

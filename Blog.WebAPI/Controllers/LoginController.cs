@@ -30,8 +30,8 @@ namespace Blog.WebAPI.Controllers
         public async Task<ApiResult> Login(string userName, string password)
         {
             string pwd = MD5Helper.MD5Encrypt32(password);
-            //后续做了user的管理后， 需要判断  加密后密码
-            SystemUser data = await _systemUserService.FindAsync(u => u.Name == userName);
+            //后续做了user的管理后， 需要判断  加密后密码 && u.UserPwd == pwd
+            SystemUser data = await _systemUserService.FindAsync(u => u.Name == userName && u.Pwd==password);
             if (data == null) return ApiResultHelper.Error("账户或密码错误");
             List<Claim> claims = new List<Claim>();
             //claims.Add(new Claim(ClaimTypes.Name, userName));
@@ -46,7 +46,7 @@ namespace Blog.WebAPI.Controllers
             var tokenDescriptor = new JwtSecurityToken(claims: claims,
                 expires: expires, signingCredentials: credentials);
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
-            return ApiResultHelper.Success(jwtToken); 
+            return ApiResultHelper.Success("Bearer " + jwtToken);
         }
     }
 }

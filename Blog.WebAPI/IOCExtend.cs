@@ -1,7 +1,8 @@
 ﻿using Blog.Repository.BlogNewsRepository;
+using Blog.WebAPI.FileManage;
 using Blog.Repository.System.SystemUser;
 using Blog.Repository.System.SystemUserRepository;
-using Blog.Service.BlogNewsService;
+using Blog.Service.BlogNewsService; 
 using Blog.Service.System.SystemUserService;
 
 namespace Blog.WebAPI
@@ -18,7 +19,8 @@ namespace Blog.WebAPI
             services.AddScoped<IBlogNewsRepository, BlogNewsRepository>();
             services.AddScoped<IBlogNewsService, BlogNewsService>();
             services.AddScoped<ISystemUserRepository, SystemUserRepository>();
-            services.AddScoped<ISystemUserService, SystemUserService>();
+            services.AddScoped<ISystemUserService, SystemUserService>();  
+            services.AddTransient<IFileManageService, FileManageService>(); 
 
             return services;
         }

@@ -17,6 +17,13 @@ namespace Blog.WebAPI
                 DbType = IocDbType.SqlServer,
                 IsAutoCloseConnection = true//自动释放
             });
+            SugarIocServices.ConfigurationSugar(db =>
+            {
+                db.Aop.OnLogExecuting = (sql, p) =>
+                {
+                    Console.WriteLine(sql);
+                }; 
+            });
             return services;
         } 
     }
